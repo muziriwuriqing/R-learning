@@ -42,6 +42,7 @@ year = rep(2011,times = nrow(data11))
 data11<- transform(data11,year=year)
 data10
 data11
+
 ```
 
 ##把前三列以后的列数据都转变为数值型
@@ -50,7 +51,7 @@ data11
 3.sapply函数用法<http://blog.fens.me/r-apply/>
 ```{r }
 data10[, c(4:ncol(data10))] <- sapply(data10[, c(4:ncol(data10))], as.numeric)
-data11[, c(4:ncol(data11))] <- sapply(data11[, c(4:ncol(data10))], as.numeric)
+data11[, c(4:ncol(data11))] <- sapply(data11[, c(4:ncol(data11))], as.numeric)
 ```
 
 ## save data to 'D:/Users/admin/Documents/R-learning/metadata.RData'
