@@ -1,0 +1,41 @@
+---
+title: "combine data"
+author: "Yiqing li"
+date: "2019年3月6日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r }
+# clear the working directory
+rm(list = ls())
+# load RData file:sourcedat.RData
+load("~/R-learning/metadata.RData")
+
+
+```
+
+## 解决data10和data11列不完全相同如何合并问题：
+使用包plyr可用函数：dplyr::bind_rows(data10,data11)
+匹配时会将不相同的变量追加在最后并设为NA
+具体plyr用法见<https://blog.csdn.net/sinat_26917383/article/details/50676894>
+
+
+
+
+```{r }
+##在表1中加入表二中不同的列，并把值设为NA
+library("plyr")
+data<-dplyr::bind_rows(data10,data11)
+
+```
+
+## save data to 'D:/Users/admin/Documents/R-learning/combine.RData'
+```{r}
+save(data10,data11, file = "D:/Users/admin/Documents/R-learning/combine.RData")
+```
