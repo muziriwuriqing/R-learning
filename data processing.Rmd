@@ -1,0 +1,60 @@
+---
+title: "data processing"
+author: "Yiqing li"
+date: "2019年3月4日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##先导入数据
+```{r }
+# clear the working directory
+rm(list = ls())
+
+data10 <- read.csv("D:/Users/admin/Desktop/test/1.csv")
+data11 <- read.csv("D:/Users/admin/Desktop/test/2.csv")
+```
+##删除第一行
+```{r }
+
+
+data10<-data10[-1,]
+data11<-data11[-1,]
+
+```
+
+##在数据框中创建新变量year即新列
+
+注：rep函数
+rep(x, n)  将x重复n次
+y <- rep(1:3, 2)
+y 的值为c(1, 2, 3, 1, 2, 3)）
+nrow()求行数
+```{r }
+year = rep(2010,times = nrow(data10))
+data10$year <- year
+
+#或者
+year = rep(2011,times = nrow(data11))
+data11<- transform(data11,year=year)
+data10
+data11
+```
+
+##把前三列以后的列数据都转变为数值型
+出现了问题：1.如何将list转换成数据框<https://zhuanlan.zhihu.com/p/27792447>
+2.数值型与字符型转换<https://code.i-harness.com/zh-CN/q/22eb65>
+3.sapply函数用法<http://blog.fens.me/r-apply/>
+```{r }
+data10[, c(4:ncol(data10))] <- sapply(data10[, c(4:ncol(data10))], as.numeric)
+data11[, c(4:ncol(data11))] <- sapply(data11[, c(4:ncol(data10))], as.numeric)
+```
+
+## save data to 'D:/Users/admin/Documents/R-learning/metadata.RData'
+```{r}
+save(data10,data11, file = "D:/Users/admin/Documents/R-learning/metadata.RData")
+```
+
