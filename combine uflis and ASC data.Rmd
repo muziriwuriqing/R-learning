@@ -1,0 +1,33 @@
+---
+title: "combine data and bindnflis"
+author: "Yiqing Li"
+date: "2019年3月7日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r }
+# clear the working directory
+rm(list = ls())
+load("~/R-learning/bindnflis.RData")
+load("~/R-learning/combine.RData")
+```
+
+## 将两个表联合在一起形成最终的表
+
+
+
+```{r }
+total<-merge(data,bindnflis,by=c("GEO.id2","year"))
+
+```
+
+# save data
+```{r}
+save(total,file = "~/R-learning/combine nflis and ASC data.RData")
+```
