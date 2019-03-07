@@ -1,0 +1,45 @@
+---
+title: "import nflis"
+author: "Yiqing Li"
+date: "2019年3月7日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 导入数据
+
+
+
+```{r }
+## clear the working directory
+rm(list = ls())
+
+
+load("~/R-learning/combine.RData")
+##install.packages("xlsx",destdir ="E:/admin/Rpackage" )
+##Sys.setenv(JAVA_HOME="D:/Program Files/Java/jdk-11.0.2")
+library(xlsx)
+workbook <- "D:/Users/admin/Desktop/test/nlfis.xlsx"
+nlfis <- read.xlsx(workbook, 2, stringsAsFactors = FALSE)
+nlfis
+```
+
+## 给变量改名
+names()函数
+或者rename()函数 书73
+```{r change name}
+##names(nlfis)[1]<-"year"
+##names(nlfis)[names(nlfis)=="YYYY"] <- "year";
+library(plyr)
+nlfis<-rename(nlfis, c(YYYY="year", FIPS_Combined="GEO.id2"))
+nlfis
+
+```
+
+## save to RData
+```{r}
+save(nlfis, file = "D:/Users/admin/Documents/R-learning/import nlfis.RData")
+```

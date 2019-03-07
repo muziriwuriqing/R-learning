@@ -1,0 +1,70 @@
+---
+title: "Sort out uflis"
+author: "Yiqing Li"
+date: "2019年3月7日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 将所有药物分成海洛因和海洛因以外的两种
+
+
+
+```{r }
+## clear the working directory
+rm(list = ls())
+load("~/R-learning/import nlfis.RData")
+```
+
+## 先将表中多出的年份全部删除
+
+```{r }
+
+nlfis<-nlfis[nlfis$year=='2010'|nlfis$year=='2011',]
+nlfis
+
+```
+## 创建一个数据框，统计2010年和2011年各地区的海洛因和非海洛因毒品（ syncase）的DrugReports数量，TotalDrugReportsCounty，TotalDrugReportsState数量
+注意：使用filter函数时一定一定先打开包dplyr
+data.frame()列名不用打引号！！！！
+
+```{r}
+##先将所有药物名称都转换成：海洛因和 syncase,
+
+nlfis$SubstanceName[nlfis$SubstanceName != "Heroin"] <- "syncase"
+
+##只留下data中出现的一个州的数据，删掉其他州
+nlfis<- nlfis[nlfis$State=="KY",]
+##合并同一年同地区的syncase的数据 借助unique函数去重,filter函数,rbind函数
+
+#先建立一个空数据框
+bindnflis<- data.frame(GEO.id2, year, SubstanceName, DrugReports,TotalDrugReportsCounty,TotalDrugReportsState)
+
+
+GEOset<-unique(GEO.id2)
+yearset<-unique(year)
+substanceset<-unique(SubstanceName)
+
+for(i in 1:length(yearset))
+{for(j in 1:length(GEOset))
+{for(z in 1:length(substanceset))
+{
+  library(dplyr)
+  m<-filter(nlfis,GEO.id2==GEOset[j],year==yearset[i],SubstanceName==substanceset[z])
+  a<-sum(m$DrugReports) 
+  b<-sum(m$TotalDrugReportsCounty)
+  c<-sum(m$TotalDrugReportsState)
+  sta<-data.frame(GEO.id2=GEOset[j],year=yearset[i],SubstanceName=substanceset[z],DrugReports=a,TotalDrugReportsCounty=b,TotalDrugReportsState=c)
+  bindnflis<-rbind(bindnflis , sta)
+}}
+}
+
+
+```
+## save binduflis data
+```{r}
+save(bindnflis,file = "D:/Users/admin/Documents/R-learning/bindnflis.RData")
+```
